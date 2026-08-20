@@ -87,7 +87,6 @@ class CropRecommendationConfig(AppConfig):
                 cls.irrigation_encoder = pickle.load(f)
             logger.info("✔ Crop Recommendation ML model assets loaded successfully.")
         except Exception as e:
-            # 8. Print unsuppressable traceback output to standard streams
             print("\n" + "="*80)
             print(f"❌ Failed to load Crop Recommendation ML model from {model_dir}: {str(e)}")
             print("Please confirm the python execution environment contains all ML packages (scikit-learn, pandas).")

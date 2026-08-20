@@ -1,5 +1,4 @@
 import datetime
-import pandas as pd
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -36,6 +35,7 @@ class CropRecommendationPredictView(APIView):
 
         # Load ML model assets now (first call loads + caches; later calls are instant)
         CropRecommendationConfig.load_models_if_needed()
+        import pandas as pd
 
         # 10. Handle Model and encoder loading failure (safe singleton check)
         if (CropRecommendationConfig.crop_model is None or 
