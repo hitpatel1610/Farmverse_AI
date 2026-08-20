@@ -34,6 +34,9 @@ class CropRecommendationPredictView(APIView):
 
         validated_data = serializer.validated_data
 
+        # Load ML model assets now (first call loads + caches; later calls are instant)
+        CropRecommendationConfig.load_models_if_needed()
+
         # 10. Handle Model and encoder loading failure (safe singleton check)
         if (CropRecommendationConfig.crop_model is None or 
             CropRecommendationConfig.label_encoder is None or 

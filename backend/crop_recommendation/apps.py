@@ -22,7 +22,19 @@ class CropRecommendationConfig(AppConfig):
     irrigation_encoder = None
 
     def ready(self):
-        # 3. Retrieve model directory from custom settings.py properties
+        # Model assets are now lazy-loaded on first use via load_models_if_needed()
+        # instead of at server startup, to keep baseline memory usage low
+        # (important on low-RAM hosts like Render's free tier).
+        pass
+
+    @classmethod
+    def load_models_if_needed(cls):
+        """Load ML model assets into memory on first use, then cache them
+        as class attributes so later calls are instant. Safe to call many
+        times; only loads once."""
+        if cls.crop_model is not None:
+            return
+
         model_dir = getattr(settings, 'CROP_MODEL_DIR', None)
         if not model_dir:
             model_dir = os.path.abspath(os.path.join(settings.BASE_DIR, '..', 'trained_models'))
@@ -60,19 +72,19 @@ class CropRecommendationConfig(AppConfig):
 
         try:
             with open(model_path, 'rb') as f:
-                CropRecommendationConfig.crop_model = pickle.load(f)
+                cls.crop_model = pickle.load(f)
             with open(encoder_path, 'rb') as f:
-                CropRecommendationConfig.label_encoder = pickle.load(f)
+                cls.label_encoder = pickle.load(f)
             with open(features_path, 'r') as f:
-                CropRecommendationConfig.features = json.load(f)
+                cls.features = json.load(f)
             with open(soil_encoder_path, 'rb') as f:
-                CropRecommendationConfig.soil_encoder = pickle.load(f)
+                cls.soil_encoder = pickle.load(f)
             with open(season_encoder_path, 'rb') as f:
-                CropRecommendationConfig.season_encoder = pickle.load(f)
+                cls.season_encoder = pickle.load(f)
             with open(district_encoder_path, 'rb') as f:
-                CropRecommendationConfig.district_encoder = pickle.load(f)
+                cls.district_encoder = pickle.load(f)
             with open(irrigation_encoder_path, 'rb') as f:
-                CropRecommendationConfig.irrigation_encoder = pickle.load(f)
+                cls.irrigation_encoder = pickle.load(f)
             logger.info("✔ Crop Recommendation ML model assets loaded successfully.")
         except Exception as e:
             # 8. Print unsuppressable traceback output to standard streams
