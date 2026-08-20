@@ -53,7 +53,7 @@ class RegisterView(APIView):
             user = AuthService.register_user(serializer.validated_data)
             user_data = UserSerializer(user).data
             return success_response(
-                message="Registration successful. Verification OTP sent to your registered email.",
+                message="Registration successful.",
                 data=user_data,
                 status_code=status.HTTP_201_CREATED
             )

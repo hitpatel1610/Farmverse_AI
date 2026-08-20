@@ -42,7 +42,7 @@ class AuthService:
         otp_code = OTPService.generate_otp(mobile)
         
         # Send OTP email
-        EmailService.send_otp_email(user.email, otp_code)
+        #EmailService.send_otp_email(user.email, otp_code)
         
         return user
 
