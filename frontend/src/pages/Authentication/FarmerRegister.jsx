@@ -134,13 +134,15 @@ export const FarmerRegister = () => {
 
                     {/* Email */}
                     <Input
-                        label="ઈમેલ આઈડી (Email - વૈકલ્પિક)"
+                        label="ઈમેલ આઈડી (Email)"
                         name="email"
                         type="email"
                         placeholder="દા.ત. name@domain.com"
                         icon={FiMail}
+                        required
                         error={errors.email}
                         {...register('email', {
+                            required: 'ઈમેલ આઈડી ફરજિયાત છે',
                             pattern: {
                                 value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                                 message: 'કૃપા કરીને યોગ્ય ઈમેલ આઈડી દાખલ કરો'
